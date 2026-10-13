@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RoseRoom — магазин роз</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#120709;--bg2:#1b0c10;--ink:#f6ece6;--mut:#c9b3b0;--rose:#c8284a;--gold:#d9b27c;--line:rgba(217,178,124,.25);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120709}}
+:root[data-theme="dark"]{--bg:#120709}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:var(--bg);color:var(--ink);font-family:Montserrat,system-ui,sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden}
+h1,h2,h3,.serif{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;line-height:1.1}
+a{color:inherit;text-decoration:none}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;justify-content:space-between;align-items:center;padding:14px 5vw;background:rgba(18,7,9,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Cormorant Garamond',serif;font-size:1.6rem;letter-spacing:.06em}
+.logo svg{width:38px;height:38px;color:var(--rose);animation:spin 40s linear infinite}
+.logo b{font-weight:600;color:var(--gold)}
+nav{display:flex;gap:28px}
+nav a{font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;position:relative;padding:6px 0;cursor:pointer}
+nav a:after{content:"";position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--gold);transition:width .4s}
+nav a:hover:after,nav a.on:after{width:100%}
+nav a.on{color:var(--gold)}
+.page{display:none;animation:fade .8s both}.page.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fall{0%{transform:translate(0,-10vh) rotate(0);opacity:0}10%{opacity:.8}100%{transform:translate(var(--dx),110vh) rotate(540deg);opacity:0}}
+@keyframes glow{50%{box-shadow:0 0 60px rgba(200,40,74,.6)}}
+#petals{position:fixed;inset:0;pointer-events:none;z-index:5;overflow:hidden}
+#petals i{position:absolute;top:0;width:12px;height:16px;border-radius:80% 0 80% 0;background:radial-gradient(circle at 30% 30%,#e25a77,#8c1230);animation:fall linear infinite}
+.hero{min-height:88vh;display:grid;place-items:center;text-align:center;padding:80px 6vw;background:radial-gradient(ellipse at 50% 30%,rgba(200,40,74,.28),transparent 60%),var(--bg);position:relative}
+.hero .big{width:min(240px,50vw);color:var(--rose);margin:0 auto 18px;filter:drop-shadow(0 0 40px rgba(200,40,74,.55));animation:float 6s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-14px) rotate(6deg)}}
+.eyebrow{font-size:.75rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold)}
+.hero h1{font-size:clamp(3rem,10vw,7rem);margin:10px 0}
+.hero h1 em{color:var(--rose);font-style:italic}
+.hero p{max-width:560px;margin:0 auto 32px;color:var(--mut)}
+.btn{display:inline-block;padding:15px 38px;border:1px solid var(--gold);color:var(--gold);letter-spacing:.2em;text-transform:uppercase;font-size:.75rem;cursor:pointer;background:none;position:relative;overflow:hidden;transition:.4s}
+.btn:hover{background:var(--gold);color:#120709}
+.btn.fill{background:var(--rose);border-color:var(--rose);color:#fff;animation:glow 3s infinite}
+section{padding:90px 6vw;max-width:1200px;margin:auto}
+.title{text-align:center;margin-bottom:50px}
+.title h2{font-size:clamp(2rem,5vw,3.4rem);margin-top:8px}
+.title h2:after{content:"";display:block;width:60px;height:1px;background:var(--gold);margin:18px auto 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px}
+.card{padding:34px 28px;border:1px solid var(--line);background:linear-gradient(160deg,var(--bg2),var(--bg));transition:.5s}
+.card:hover{transform:translateY(-8px);border-color:var(--gold);box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.card .ic{font-size:1.8rem;color:var(--gold);margin-bottom:12px}
+.card h3{font-size:1.6rem;margin-bottom:8px}
+.card p{color:var(--mut);font-size:.9rem}
+.band{background:var(--bg2);border-block:1px solid var(--line);max-width:none}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;max-width:1100px;margin:auto}
+.about svg{width:100%;max-width:320px;margin:auto;color:var(--rose);animation:float 8s ease-in-out infinite}
+.about h2{font-size:clamp(2rem,4vw,3rem);margin:8px 0 16px}
+.about p{color:var(--mut);margin-bottom:12px}
+.stats{display:flex;flex-wrap:wrap;justify-content:space-around;gap:20px;text-align:center}
+.stats b{display:block;font-family:'Cormorant Garamond',serif;font-size:3.4rem;color:var(--gold);font-weight:400}
+.stats span{font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+.rose{text-align:center;padding:30px 20px;border:1px solid var(--line);background:var(--bg2);transition:.5s;position:relative}
+.rose:hover{transform:translateY(-8px) scale(1.02);border-color:var(--c)}
+.rose svg{width:96px;height:96px;color:var(--c);transition:transform .8s;filter:drop-shadow(0 0 18px var(--c))}
+.rose:hover svg{transform:rotate(90deg) scale(1.1)}
+.rose h3{font-size:1.7rem;margin:10px 0 4px;color:var(--c)}
+.rose small{display:block;letter-spacing:.2em;text-transform:uppercase;font-size:.68rem;color:var(--gold);margin-bottom:8px}
+.rose p{font-size:.88rem;color:var(--mut)}
+.culture{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:30px}
+.culture div{border-left:1px solid var(--gold);padding-left:22px}
+.culture h3{color:var(--gold);font-size:1.5rem;margin-bottom:6px}
+.culture p{color:var(--mut);font-size:.92rem}
+.contacts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+.contacts .card{text-align:center}
+.cta{text-align:center;padding:100px 6vw;background:radial-gradient(ellipse at center,rgba(200,40,74,.3),transparent 70%)}
+.cta h2{font-size:clamp(2rem,6vw,4rem);margin-bottom:24px}
+footer{border-top:1px solid var(--line);background:var(--bg2);padding:60px 6vw 30px}
+.fgrid{max-width:1200px;margin:auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px}
+footer h4{font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:400}
+footer p,footer a{display:block;color:var(--mut);font-size:.9rem;cursor:pointer}
+footer a:hover{color:var(--gold)}
+.copy{text-align:center;margin-top:40px;font-size:.75rem;color:var(--mut);letter-spacing:.1em}
+.rv{opacity:0;transform:translateY(30px);transition:1s cubic-bezier(.2,.7,.2,1)}.rv.in{opacity:1;transform:none}
+@media(max-width:760px){nav{gap:14px}nav a{font-size:.66rem;letter-spacing:.1em}.logo{font-size:1.25rem}.logo svg{width:30px;height:30px}.about,.fgrid{grid-template-columns:1fr}section{padding:60px 6vw}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><symbol id="r" viewBox="0 0 100 100"><g fill="currentColor" stroke="#120709" stroke-opacity=".5" stroke-width="1.2"><g opacity=".55"><ellipse cx="50" cy="22" rx="16" ry="22"/><ellipse cx="50" cy="22" rx="16" ry="22" transform="rotate(72 50 50)"/><ellipse cx="50" cy="22" rx="16" ry="22" transform="rotate(144 50 50)"/><ellipse cx="50" cy="22" rx="16" ry="22" transform="rotate(216 50 50)"/><ellipse cx="50" cy="22" rx="16" ry="22" transform="rotate(288 50 50)"/></g><g opacity=".8"><ellipse cx="50" cy="31" rx="12" ry="17" transform="rotate(36 50 50)"/><ellipse cx="50" cy="31" rx="12" ry="17" transform="rotate(108 50 50)"/><ellipse cx="50" cy="31" rx="12" ry="17" transform="rotate(180 50 50)"/><ellipse cx="50" cy="31" rx="12" ry="17" transform="rotate(252 50 50)"/><ellipse cx="50" cy="31" rx="12" ry="17" transform="rotate(324 50 50)"/></g><circle cx="50" cy="50" r="15"/></g><path d="M50 50c4-6 9 0 5 5s-12 2-12-6 12-12 18-4" fill="none" stroke="#120709" stroke-opacity=".6" stroke-width="2"/></symbol></svg>
+<div id="petals"></div>
+
+<header>
+  <a class="logo" data-go="home"><svg><use href="#r"/></svg><span>Rose<b>Room</b></span></a>
+  <nav><a data-go="home" class="on">Главная</a><a data-go="roses">Розы</a><a data-go="contacts">Контакты</a></nav>
+</header>
+
+<main>
+<!-- ГЛАВНАЯ -->
+<div class="page on" id="home">
+  <div class="hero"><div>
+    <svg class="big"><use href="#r"/></svg>
+    <div class="eyebrow">Бутик премиальных роз</div>
+    <h1>Rose<em>Room</em></h1>
+    <p>Комната, где живут самые совершенные розы. Мы выбираем лучшие бутоны и превращаем их в язык чувств.</p>
+    <a class="btn fill" data-go="roses">Смотреть коллекцию</a>
+  </div></div>
+
+  <section class="rv"><div class="about">
+    <svg viewBox="0 0 100 100"><use href="#r"/></svg>
+    <div><div class="eyebrow">О магазине</div><h2>Розы, которые говорят за вас</h2>
+    <p>RoseRoom — это магазин, посвящённый одному цветку. Мы работаем напрямую с лучшими плантациями Эквадора, Колумбии и Голландии и привозим розы свежими — в день срезки.</p>
+    <p>Каждый букет собирает флорист-стилист: от строгих монобукетов до объёмных композиций в шляпных коробках.</p></div>
+  </div></section>
+
+  <section class="rv"><div class="title"><div class="eyebrow">Почему мы</div><h2>Наши преимущества</h2></div>
+    <div class="grid">
+      <div class="card"><div class="ic">✦</div><h3>Свежесть до 14 дней</h3><p>Розы прямо с плантации, без долгих складов. Гарантируем свежесть и меняем букет, если он не прожил заявленный срок.</p></div>
+      <div class="card"><div class="ic">❦</div><h3>Авторская сборка</h3><p>Каждый букет создаёт флорист в единственном экземпляре — никаких шаблонов.</p></div>
+      <div class="card"><div class="ic">➳</div><h3>Доставка за 60 минут</h3><p>Бережно привезём букет в красивой упаковке в день заказа, в любое удобное время.</p></div>
+      <div class="card"><div class="ic">♡</div><h3>Открытка и сервис</h3><p>Бесплатная открытка с вашим текстом и советы по уходу, чтобы розы стояли дольше.</p></div>
+    </div></section>
+
+  <section class="band rv"><div class="stats">
+    <div><b>12+</b><span>оттенков роз</span></div><div><b>5000+</b><span>счастливых букетов</span></div><div><b>60 мин</b><span>доставка</span></div><div><b>14 дней</b><span>свежести</span></div>
+  </div></section>
+
+  <div class="cta rv"><h2>Подарите розу, которую запомнят</h2><a class="btn fill" data-go="contacts">Заказать букет</a></div>
+</div>
+
+<!-- РОЗЫ -->
+<div class="page" id="roses">
+  <section><div class="title"><div class="eyebrow">Ассортимент</div><h2>Коллекция роз RoseRoom</h2></div>
+    <div class="grid" id="rosegrid"></div></section>
+  <section class="band rv"><div style="max-width:1100px;margin:auto"><div class="title"><div class="eyebrow">Символика</div><h2>Значение роз в культуре</h2></div>
+    <div class="culture">
+      <div><h3>Древний мир</h3><p>В Греции и Риме роза — цветок Афродиты и Венеры, символ любви и красоты. Римляне украшали ею пиры и триумфы.</p></div>
+      <div><h3>Христианство</h3><p>Белая роза — образ чистоты Девы Марии, красная — символ страсти и мученичества. Роза дала имя розарию.</p></div>
+      <div><h3>Викторианская флористика</h3><p>В XIX веке букет заменял письмо: цвет, число и даже наклон цветка передавали тайные послания.</p></div>
+      <div><h3>Восток</h3><p>В персидской поэзии роза — возлюбленная, а соловей — влюблённый поэт. Розовая вода и масло ценились на Востоке веками.</p></div>
+      <div><h3>Геральдика</h3><p>Алая и Белая розы — эмблемы Ланкастеров и Йорков в Войне Алой и Белой розы; позже — Тюдоровская роза Англии.</p></div>
+      <div><h3>Современность</h3><p>Роза остаётся знаком признания в любви, благодарности и уважения — от свиданий до больших юбилеев.</p></div>
+    </div></div></section>
+  <div class="cta rv"><h2>Не знаете, какую выбрать?</h2><a class="btn fill" data-go="contacts">Спросить флориста</a></div>
+</div>
+
+<!-- КОНТАКТЫ -->
+<div class="page" id="contacts">
+  <section><div class="title"><div class="eyebrow">Свяжитесь с нами</div><h2>Контакты RoseRoom</h2></div>
+    <div class="contacts">
+      <div class="card"><div class="ic">⌖</div><h3>Адрес</h3><p>Москва, ул. Цветочная, 12<br>Шоурум на 1 этаже</p></div>
+      <div class="card"><div class="ic">✆</div><h3>Телефон</h3><p><a href="tel:+74950000000">+7 (495) 000-00-00</a><br>Ежедневно, звонки и WhatsApp</p></div>
+      <div class="card"><div class="ic">✉</div><h3>Почта</h3><p><a href="mailto:hello@roseroom.ru">hello@roseroom.ru</a><br>Отвечаем в течение часа</p></div>
+      <div class="card"><div class="ic">◷</div><h3>Часы работы</h3><p>Пн–Вс: 08:00 – 22:00<br>Доставка: до 23:00</p></div>
+      <div class="card"><div class="ic">❀</div><h3>Соцсети</h3><p>Telegram: @******<br>Instagram: @******</p></div>
+      <div class="card"><div class="ic">➳</div><h3>Доставка</h3><p>По Москве — от 60 минут<br>Бесплатно от 7 000 ₽</p></div>
+    </div></section>
+  <div class="cta rv"><h2>Позвоните — подберём идеальный букет</h2><a class="btn fill" href="tel:+74950000000">Позвонить</a></div>
+</div>
+</main>
+
+<footer>
+  <div class="fgrid">
+    <div><a class="logo" data-go="home"><svg><use href="#r"/></svg><span>Rose<b>Room</b></span></a><p style="margin-top:14px;max-width:340px">Бутик премиальных роз. Свежие цветы, авторские букеты и доставка за 60 минут.</p></div>
+    <div><h4>Навигация</h4><a data-go="home">Главная</a><a data-go="roses">Розы</a><a data-go="contacts">Контакты</a></div>
+    <div><h4>Связь</h4><p>+7 (495) 000-00-00</p><p>hello@roseroom.ru</p><p>Ежедневно 08:00–22:00</p></div>
+  </div>
+  <div class="copy">© 2026 RoseRoom. Все права защищены.</div>
+</footer>
+
+<script>
+const R=[["Красная","#e0264a","Страсть и любовь","Классика признания в любви. Глубокий бархатный цвет и насыщенный аромат."],
+["Розовая","#f27ca3","Нежность и благодарность","Мягкий знак симпатии, восхищения и тёплой признательности."],
+["Белая","#f1ebe3","Чистота и новое начало","Свадебная классика. Символ невинности, уважения и памяти."],
+["Жёлтая","#f2c230","Дружба и радость","Солнечный цвет тепла, хорошего настроения и пожелания счастья."],
+["Оранжевая","#f08a3c","Энтузиазм и страсть","Яркий огонь чувств, восхищение и желание удивить."],
+["Персиковая","#f5b08f","Скромность и искренность","Тёплый нежный оттенок для благодарности и тихой симпатии."],
+["Лавандовая","#a98adb","Очарование с первого взгляда","Редкий мистический цвет любви с первого взгляда."],
+["Бордовая","#8f1636","Глубокая страсть","Тёмная, почти чёрная роза — зрелое, взрослое чувство."],
+["Кремовая","#f0dcb8","Элегантность","Благородный оттенок шампанского для торжеств и юбилеев."],
+["Бирюзовая","#4fc3c8","Необычность","Окрашенные розы для смелых подарков и креативных композиций."]];
+document.getElementById('rosegrid').innerHTML=R.map(r=>`<div class="rose rv" style="--c:${r[1]}"><svg><use href="#r"/></svg><h3>${r[0]}</h3><small>${r[2]}</small><p>${r[3]}</p></div>`).join('');
+const pages=['home','roses','contacts'];
+function go(p){if(!pages.includes(p))p='home';
+ document.querySelectorAll('.page').forEach(e=>e.classList.toggle('on',e.id===p));
+ document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('on',a.dataset.go===p));
+ scrollTo({top:0,behavior:'smooth'});setTimeout(obs,100)}
+document.addEventListener('click',e=>{const a=e.target.closest('[data-go]');if(a){e.preventDefault();history.replaceState(null,'','#'+a.dataset.go);go(a.dataset.go)}});
+const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12});
+function obs(){document.querySelectorAll('.page.on .rv').forEach(e=>io.observe(e))}
+const P=document.getElementById('petals');
+for(let i=0;i<16;i++){const p=document.createElement('i');p.style.cssText=`left:${Math.random()*100}vw;--dx:${(Math.random()-.5)*200}px;animation-duration:${9+Math.random()*10}s;animation-delay:${-Math.random()*15}s;transform:scale(${.6+Math.random()})`;P.appendChild(p)}
+go(location.hash.slice(1)||'home');
+</script>
+</body>
+</html>
